@@ -2,25 +2,29 @@ const navToggle = document.querySelector('.nav-toggle');
 const nav = document.querySelector('#primary-nav');
 const yearEl = document.getElementById('year');
 
+const closeNav = () => {
+  if (nav) {
+    nav.setAttribute('data-open', 'false');
+  }
+  if (navToggle) {
+    navToggle.setAttribute('aria-expanded', 'false');
+  }
+};
+
 if (navToggle && nav) {
-  const toggleNav = () => {
+  navToggle.addEventListener('click', () => {
     const isOpen = nav.getAttribute('data-open') === 'true';
     nav.setAttribute('data-open', String(!isOpen));
     navToggle.setAttribute('aria-expanded', String(!isOpen));
-  };
-
-  navToggle.addEventListener('click', toggleNav);
+  });
 
   nav.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
-      nav.setAttribute('data-open', 'false');
-      navToggle.setAttribute('aria-expanded', 'false');
-    });
+    link.addEventListener('click', closeNav);
   });
+
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
-      nav.setAttribute('data-open', 'false');
-      navToggle.setAttribute('aria-expanded', 'false');
+      closeNav();
     }
   });
 }
@@ -34,9 +38,20 @@ const contactForm = document.querySelector('.contact__form');
 if (contactForm) {
   contactForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    const data = new FormData(contactForm);
-    const name = data.get('name') || 'there';
-    alert(`Thank you, ${name}! Our team will reach out within one business day.`);
+    const formData = new FormData(contactForm);
+    const name = formData.get('name') || 'there';
+    alert(`Thank you, ${name}! Our launchpad advisors will WhatsApp you within 6 working hours.`);
     contactForm.reset();
+  });
+}
+
+const supportFab = document.querySelector('.support-fab');
+
+if (supportFab) {
+  supportFab.addEventListener('click', () => {
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
   });
 }
